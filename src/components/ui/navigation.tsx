@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Navbar } from './navbar';
 
 export function Navigation() {
