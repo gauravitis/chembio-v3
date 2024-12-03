@@ -29,38 +29,34 @@ export function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-gray-900/90 backdrop-blur-lg shadow-lg' : 'bg-transparent'
+        isScrolled ? 'bg-black/80 backdrop-blur-lg' : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link
             href="/"
-            className="text-xl font-bold bg-gradient-to-r from-accent-blue to-accent-purple bg-clip-text text-transparent"
+            className="text-2xl font-bold bg-gradient-to-r from-blue-200 via-indigo-300 to-purple-400 text-transparent bg-clip-text hover:opacity-80 transition-opacity"
           >
             ChemBio
           </Link>
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`text-sm font-medium transition-all duration-300 ${
                   pathname === link.href
-                    ? 'text-white bg-white/10'
-                    : 'text-gray-300 hover:text-white hover:bg-white/5'
+                    ? 'bg-gradient-to-r from-blue-200 via-indigo-300 to-purple-400 text-transparent bg-clip-text border-b-2 border-[#B490F5]'
+                    : 'bg-gradient-to-r from-gray-100 to-gray-300 text-transparent bg-clip-text hover:from-blue-200 hover:via-indigo-300 hover:to-purple-400'
                 }`}
               >
                 {link.label}
               </Link>
             ))}
-          </div>
-
-          {/* Admin Login Button */}
-          <div className="flex items-center">
             <AdminLoginButton />
           </div>
 
