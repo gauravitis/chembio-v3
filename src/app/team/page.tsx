@@ -1,8 +1,12 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { PageHeader } from '@/components/ui/page-header';
 import { SimpleModal } from '@/components/ui/simple-modal';
+import { DepartmentCard } from '@/components/ui/department-card';
 import { useState } from 'react';
+import Image from 'next/image';
+import { LinkedinIcon, MailIcon, PhoneIcon } from 'lucide-react';
 
 interface TeamMember {
   name: string;
@@ -10,6 +14,7 @@ interface TeamMember {
   experience: string;
   email: string;
   phone: string;
+  expertise: string;
 }
 
 interface DepartmentMembers {
@@ -18,18 +23,21 @@ interface DepartmentMembers {
 
 export default function TeamPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
 
   const leaders = [
     {
       name: 'Jagdish Kaushal',
       role: 'Managing Director',
-      bio: 'With over 30 years of experience in the chemical and life sciences industry, Mr. Jagdish Kaushal has been instrumental in establishing Chembio Lifesciences as a leading supplier of high-quality research chemicals and equipment.',
+      bio: 'With over 30 years of experience in the chemical and life sciences industry, Mr. Jagdish Kaushal has been instrumental in establishing ChemBio Lifesciences as a leading supplier of high-quality research chemicals and equipment.',
       achievements: [
         'Pioneer in research chemical distribution',
         'Built partnerships with leading global manufacturers',
         'Established nationwide distribution network'
-      ]
+      ],
+      email: 'jagdish.chembio@gmail.com',
+      phone: '+91-9717397104'
     },
     {
       name: 'Rajni Kaushal',
@@ -39,180 +47,393 @@ export default function TeamPage() {
         'Streamlined business operations',
         'Enhanced customer service standards',
         'Developed institutional partnerships'
-      ]
+      ],
+      email: 'rajni.chembio@gmail.com',
+      phone: '+91-8750982727'
     }
   ];
 
   const departmentMembers: DepartmentMembers = {
-    'Sales & Distribution': [
+    'Sales & Marketing': [
       {
-        name: 'Rahul Sharma',
+        name: 'Pramod Shukla',
         role: 'Sales Manager',
-        experience: '8 years of experience in chemical sales and distribution',
-        email: 'rahul.sharma@chembio.com',
-        phone: '+91 98765 43210'
+        expertise: 'B2B Sales, Market Strategy, Client Relations',
+        experience: '10+ years in chemical and pharmaceutical sales',
+        email: 'pramod.chembio@gmail.com',
+        phone: '+91-9876543212'
       },
       {
-        name: 'Priya Patel',
-        role: 'Sales Executive',
-        experience: '5 years of experience in B2B sales',
-        email: 'priya.patel@chembio.com',
-        phone: '+91 98765 43211'
+        name: 'Akash',
+        role: 'Marketing Manager',
+        expertise: 'Digital Marketing, Product Promotion',
+        experience: '8+ years in chemical industry marketing',
+        email: 'akash.chembio@gmail.com',
+        phone: '+91-9876543218'
       },
       {
-        name: 'Amit Kumar',
-        role: 'Distribution Coordinator',
-        experience: '4 years of logistics and distribution experience',
-        email: 'amit.kumar@chembio.com',
-        phone: '+91 98765 43212'
-      },
-      {
-        name: 'Neha Singh',
-        role: 'Sales Executive',
-        experience: '3 years of technical sales experience',
-        email: 'neha.singh@chembio.com',
-        phone: '+91 98765 43213'
-      }
-    ],
-    'Quality Control': [
-      {
-        name: 'Dr. Suresh Kumar',
-        role: 'Quality Manager',
-        experience: '10 years of experience in chemical quality control',
-        email: 'suresh.kumar@chembio.com',
-        phone: '+91 98765 43214'
-      },
-      {
-        name: 'Anjali Gupta',
-        role: 'Quality Analyst',
-        experience: '4 years of laboratory experience',
-        email: 'anjali.gupta@chembio.com',
-        phone: '+91 98765 43215'
+        name: 'Ayush Singh',
+        role: 'Sales Manager',
+        expertise: 'Sales Strategy, Team Management',
+        experience: '9+ years in pharmaceutical sales',
+        email: 'ayush.chembio@gmail.com',
+        phone: '+91-9876543219'
       }
     ],
     'Customer Support': [
       {
-        name: 'Vikram Reddy',
-        role: 'Support Manager',
-        experience: '6 years of technical support experience',
-        email: 'vikram.reddy@chembio.com',
-        phone: '+91 98765 43216'
+        name: 'Rajendra Jadoun',
+        role: 'Customer Support Lead',
+        expertise: 'Technical Support, Customer Service, Product Knowledge',
+        experience: '8+ years in technical support',
+        email: 'rajendra.chembio@gmail.com',
+        phone: '+91-9876543213'
       },
       {
-        name: 'Meera Kapoor',
-        role: 'Technical Support',
-        experience: '3 years of customer service in chemical industry',
-        email: 'meera.kapoor@chembio.com',
-        phone: '+91 98765 43217'
+        name: 'Rohit',
+        role: 'Technical Support Specialist',
+        expertise: 'Product Support, Customer Relations',
+        experience: '6+ years in customer support',
+        email: 'rohit.chembio@gmail.com',
+        phone: '+91-9876543220'
+      },
+      {
+        name: 'Rajeev Yadav',
+        role: 'Customer Service Representative',
+        expertise: 'Customer Care, Technical Assistance',
+        experience: '5+ years in technical customer service',
+        email: 'rajeev.chembio@gmail.com',
+        phone: '+91-9876543221'
       }
     ],
-    'Logistics': [
+    'Logistics & Supply Chain': [
       {
-        name: 'Rajesh Kumar',
+        name: 'Rajeev Yadav',
         role: 'Logistics Manager',
-        experience: '7 years of supply chain experience',
-        email: 'rajesh.kumar@chembio.com',
-        phone: '+91 98765 43218'
+        expertise: 'Supply Chain Management, Distribution',
+        experience: '10+ years in chemical logistics',
+        email: 'rajeev.chembio@gmail.com',
+        phone: '+91-9876543222'
       },
       {
-        name: 'Sanjay Verma',
-        role: 'Warehouse Coordinator',
-        experience: '5 years of inventory management',
-        email: 'sanjay.verma@chembio.com',
-        phone: '+91 98765 43219'
-      }
-    ],
-    'Accounts': [
+        name: 'Vikas Prajapati',
+        role: 'Supply Chain Analyst',
+        expertise: 'Inventory Management, Process Optimization',
+        experience: '7+ years in supply chain operations',
+        email: 'vikas.chembio@gmail.com',
+        phone: '+91-9876543223'
+      },
       {
-        name: 'CA Deepak Agarwal',
-        role: 'Senior Accountant',
-        experience: '8 years of financial management experience',
-        email: 'deepak.agarwal@chembio.com',
-        phone: '+91 98765 43220'
+        name: 'Chandu',
+        role: 'Warehouse Supervisor',
+        expertise: 'Warehouse Management, Shipping Operations',
+        experience: '8+ years in chemical storage and handling',
+        email: 'chandu.chembio@gmail.com',
+        phone: '+91-9876543224'
       }
     ]
   };
 
   const departments = [
     {
-      name: 'Sales & Distribution',
-      description: 'Managing nationwide chemical and equipment distribution.',
-      members: 4
-    },
-    {
-      name: 'Quality Control',
-      description: 'Ensuring product quality and compliance with standards.',
-      members: 2
+      name: 'Sales & Marketing',
+      description: 'Building strong relationships and market presence',
+      members: 3
     },
     {
       name: 'Customer Support',
-      description: 'Providing technical assistance and order support.',
-      members: 2
+      description: 'Providing exceptional service and technical assistance',
+      members: 3
     },
     {
-      name: 'Logistics',
-      description: 'Handling warehousing and timely deliveries.',
-      members: 2
-    },
-    {
-      name: 'Accounts',
-      description: 'Managing financial operations and transactions.',
-      members: 1
+      name: 'Logistics & Supply Chain',
+      description: 'Managing efficient distribution and delivery',
+      members: 3
     }
   ];
 
-  const handleDepartmentClick = (deptName: string) => {
-    console.log('Opening modal for department:', deptName);
-    setSelectedDepartment(deptName);
+  const handleDepartmentClick = (department: string) => {
+    setSelectedDepartment(department);
     setIsModalOpen(true);
+    setSelectedMember(null);
+  };
+
+  const handleMemberClick = (member: TeamMember) => {
+    setSelectedMember(member);
   };
 
   return (
     <main className="min-h-screen bg-gradient-custom">
       <PageHeader 
         title="Our Team" 
-        subtitle="Meet the visionary leaders behind Chembio Lifesciences" 
+        subtitle="Meet the dedicated professionals behind ChemBio Lifesciences" 
       />
 
       {/* Leadership Team */}
-      <section className="py-16 px-4">
+      <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-semibold text-center text-gradient mb-12">Leadership Team</h2>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent mb-4">
+              Leadership Team
+            </h2>
+            <p className="text-gray-300 max-w-2xl mx-auto">
+              Our visionary leaders who guide ChemBio Lifesciences towards excellence and innovation.
+            </p>
+          </motion.div>
+
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {leaders.map((leader) => (
-              <div key={leader.name} className="service-card animate-fade-in group">
-                <div className="relative h-80 mb-6 rounded-lg overflow-hidden bg-white/5">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-10" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <svg
-                      className="w-full h-full text-accent-blue/10"
-                      fill="currentColor"
-                      viewBox="0 0 100 100"
-                    >
-                      <defs>
-                        <pattern
-                          id="grid"
-                          width="10"
-                          height="10"
-                          patternUnits="userSpaceOnUse"
-                        >
-                          <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                        </pattern>
-                      </defs>
-                      <rect width="100" height="100" fill="url(#grid)" />
-                      <circle cx="50" cy="35" r="20" className="text-accent-blue/20" />
-                      <path
-                        d="M50 65 Q50 75 50 85"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        fill="none"
-                      />
-                      <circle cx="50" cy="25" r="8" className="text-accent-purple/30" />
-                    </svg>
+            {leaders.map((leader, index) => (
+              <motion.div
+                key={leader.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="group"
+              >
+                <div className="relative bg-white/10 backdrop-blur-sm rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 hover:bg-white/20">
+                  {/* Abstract Pattern Background */}
+                  <div className="relative h-80 overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-600/20">
+                    {/* Grid Pattern */}
+                    <div className="absolute inset-0" style={{ 
+                      backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)',
+                      backgroundSize: '20px 20px'
+                    }} />
+                    
+                    {/* Animated Circles */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="rounded-full bg-accent-blue/10 w-32 h-32 flex items-center justify-center border border-accent-blue/20">
+                      <div className="relative w-48 h-48">
+                        <div className="absolute inset-0 rounded-full bg-blue-500/10 animate-pulse" />
+                        <div className="absolute inset-4 rounded-full bg-purple-500/10 animate-pulse delay-150" />
+                        <div className="absolute inset-8 rounded-full bg-blue-500/10 animate-pulse delay-300" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <svg
+                            className="w-24 h-24 text-white/20"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="1"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6">
+                    <h3 className="text-2xl font-semibold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent mb-2">
+                      {leader.name}
+                    </h3>
+                    <p className="text-gray-300 font-medium mb-4">{leader.role}</p>
+                    <p className="text-gray-400 text-sm leading-relaxed mb-6">
+                      {leader.bio}
+                    </p>
+
+                    {/* Achievements */}
+                    <div className="space-y-2 mb-6">
+                      {leader.achievements.map((achievement, i) => (
+                        <div key={i} className="flex items-start gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2" />
+                          <p className="text-gray-300 text-sm">{achievement}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Contact Information */}
+                    <div className="flex flex-col sm:flex-row gap-4 text-sm text-gray-400">
+                      <a
+                        href={`mailto:${leader.email}`}
+                        className="flex items-center gap-2 hover:text-blue-400 transition-colors"
+                      >
+                        <MailIcon className="w-4 h-4" />
+                        <span>{leader.email}</span>
+                      </a>
+                      <a
+                        href={`tel:${leader.phone}`}
+                        className="flex items-center gap-2 hover:text-purple-400 transition-colors"
+                      >
+                        <PhoneIcon className="w-4 h-4" />
+                        <span>{leader.phone}</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Departments */}
+      <section className="py-20 px-4 bg-white/5 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent mb-4">
+              Our Departments
+            </h2>
+            <p className="text-gray-300 max-w-2xl mx-auto">
+              Explore our specialized teams working together to deliver excellence.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {departments.map((dept, index) => (
+              <DepartmentCard
+                key={dept.name}
+                name={dept.name}
+                description={dept.description}
+                members={dept.members}
+                onClick={() => handleDepartmentClick(dept.name)}
+                index={index}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Department Modal */}
+      <SimpleModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedMember(null);
+        }}
+        title={selectedMember ? selectedMember.name : selectedDepartment || ''}
+      >
+        {selectedMember ? (
+          // Individual member view
+          <div className="space-y-8">
+            {/* Header with back button */}
+            <div className="flex items-center gap-4 mb-6">
+              <button
+                onClick={() => setSelectedMember(null)}
+                className="p-2 rounded-lg bg-gray-800/50 hover:bg-blue-500/10 transition-colors duration-300 group"
+              >
+                <svg
+                  className="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors duration-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
+                </svg>
+              </button>
+              <h3 className="text-2xl font-bold text-white">{selectedDepartment}</h3>
+            </div>
+
+            {/* Member details */}
+            <div className="bg-gradient-to-br from-gray-800/30 via-gray-900/30 to-black/30 rounded-2xl p-8 border border-gray-700/50">
+              <div className="flex items-start gap-8">
+                {/* Avatar */}
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full animate-spin-slow opacity-70" />
+                  <div className="relative rounded-full bg-gradient-to-br from-gray-800 to-gray-900 w-24 h-24 flex items-center justify-center border border-gray-700/50">
+                    <svg
+                      className="w-12 h-12 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Info */}
+                <div className="flex-grow space-y-6">
+                  <div>
+                    <h2 className="text-3xl font-bold text-white mb-2">{selectedMember.name}</h2>
+                    <p className="text-lg text-purple-400">{selectedMember.role}</p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-400 mb-2">Expertise</h4>
+                      <p className="text-white">{selectedMember.expertise}</p>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-400 mb-2">Experience</h4>
+                      <p className="text-white">{selectedMember.experience}</p>
+                    </div>
+                  </div>
+
+                  {/* Contact info */}
+                  <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-gray-700/50">
+                    <a
+                      href={`mailto:${selectedMember.email}`}
+                      className="flex items-center gap-3 text-gray-400 hover:text-blue-400 transition-all duration-300 group"
+                    >
+                      <span className="p-2 rounded-lg bg-gray-800/50 group-hover:bg-blue-500/10 transition-colors duration-300">
+                        <MailIcon className="w-5 h-5" />
+                      </span>
+                      <span className="text-base">{selectedMember.email}</span>
+                    </a>
+                    <a
+                      href={`tel:${selectedMember.phone.replace(/\s/g, '')}`}
+                      className="flex items-center gap-3 text-gray-400 hover:text-blue-400 transition-all duration-300 group"
+                    >
+                      <span className="p-2 rounded-lg bg-gray-800/50 group-hover:bg-blue-500/10 transition-colors duration-300">
+                        <PhoneIcon className="w-5 h-5" />
+                      </span>
+                      <span className="text-base">{selectedMember.phone}</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          // Department members grid
+          <div className="grid md:grid-cols-2 gap-6">
+            {selectedDepartment && departmentMembers[selectedDepartment]?.map((member, index) => (
+              <div 
+                key={member.name + index}
+                className="group relative rounded-xl bg-gradient-to-br from-gray-800/20 via-gray-900/20 to-black/20 hover:from-blue-500/10 hover:via-purple-500/10 hover:to-black/20 transition-all duration-500 cursor-pointer"
+                onClick={() => handleMemberClick(member)}
+              >
+                {/* Animated border gradient */}
+                <div className="absolute -inset-[1px] bg-gradient-to-r from-blue-500/30 to-purple-600/30 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-sm" />
+                
+                {/* Content container */}
+                <div className="relative p-6 rounded-xl overflow-hidden backdrop-blur-sm border border-gray-800/50 group-hover:border-gray-700/50 transition-colors duration-500">
+                  <div className="flex items-start gap-5">
+                    {/* Avatar with animated gradient */}
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full animate-spin-slow opacity-0 group-hover:opacity-70 transition-opacity duration-500" />
+                      <div className="relative rounded-full bg-gradient-to-br from-gray-800 to-gray-900 w-16 h-16 flex items-center justify-center border border-gray-700/50 group-hover:border-gray-600/50 transition-colors duration-500">
                         <svg
-                          className="w-16 h-16 text-accent-blue/40"
+                          className="w-8 h-8 text-gray-400 group-hover:text-blue-400/60 transition-colors duration-500"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -226,109 +447,24 @@ export default function TeamPage() {
                         </svg>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-2xl font-semibold text-white mb-1">{leader.name}</h3>
-                    <p className="text-gradient text-lg">{leader.role}</p>
-                  </div>
-                  <p className="text-gray-300 leading-relaxed">{leader.bio}</p>
-                  <div className="pt-4">
-                    <h4 className="text-white font-semibold mb-3">Key Achievements:</h4>
-                    <ul className="space-y-2">
-                      {leader.achievements.map((achievement, index) => (
-                        <li 
-                          key={index} 
-                          className="flex items-center text-gray-300"
-                        >
-                          <span className="text-accent-blue mr-2">•</span>
-                          {achievement}
-                        </li>
-                      ))}
-                    </ul>
+
+                    {/* Content */}
+                    <div className="flex-grow min-w-0">
+                      <h3 className="text-xl font-semibold text-white mb-1 truncate group-hover:text-blue-400 transition-colors duration-500">
+                        {member.name}
+                      </h3>
+                      <p className="text-purple-400/80 text-sm font-medium mb-2">{member.role}</p>
+                      <p className="text-gray-400 text-sm leading-relaxed line-clamp-2 group-hover:text-gray-300 transition-colors duration-500">
+                        Click to view full profile
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Departments */}
-      <section className="py-16 px-4 bg-white/5">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-semibold text-center text-gradient mb-12">Our Departments</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {departments.slice(0, 3).map((dept) => (
-              <div 
-                key={dept.name} 
-                className="service-card animate-fade-in group hover:-translate-y-1 transition-transform cursor-pointer"
-                onClick={() => handleDepartmentClick(dept.name)}
-                role="button"
-                tabIndex={0}
-              >
-                <h3 className="text-xl font-semibold text-white mb-2">{dept.name}</h3>
-                <p className="text-gray-400 mb-4">{dept.description}</p>
-                <div className="text-gradient flex items-center gap-2">
-                  <svg 
-                    className="w-5 h-5" 
-                    fill="currentColor" 
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
-                  </svg>
-                  {dept.members} team members
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mt-8">
-            {departments.slice(3).map((dept) => (
-              <div 
-                key={dept.name} 
-                className="service-card animate-fade-in group hover:-translate-y-1 transition-transform cursor-pointer"
-                onClick={() => handleDepartmentClick(dept.name)}
-                role="button"
-                tabIndex={0}
-              >
-                <h3 className="text-xl font-semibold text-white mb-2">{dept.name}</h3>
-                <p className="text-gray-400 mb-4">{dept.description}</p>
-                <div className="text-gradient flex items-center gap-2">
-                  <svg 
-                    className="w-5 h-5" 
-                    fill="currentColor" 
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
-                  </svg>
-                  {dept.members} team members
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Join Our Team */}
-      <section className="py-16 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-semibold text-gradient mb-6">Join Our Team</h2>
-          <p className="text-gray-300 mb-8">
-            We're always looking for talented individuals who are passionate about 
-            advancing scientific research and innovation.
-          </p>
-          <button className="btn-primary">View Open Positions</button>
-        </div>
-      </section>
-
-      {/* Team Modal */}
-      <SimpleModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        department={selectedDepartment}
-        members={departmentMembers[selectedDepartment] || []}
-      />
+        )}
+      </SimpleModal>
     </main>
   );
 }

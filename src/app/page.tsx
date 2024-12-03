@@ -34,15 +34,15 @@ export default function Home() {
             {/* Stats */}
             <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 animate-fade-in" style={{ animationDelay: '0.3s' }}>
               <div className="text-center p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
-                <div className="text-4xl font-bold text-gradient mb-2">500+</div>
+                <div className="text-4xl font-bold text-gradient mb-2">1000+</div>
                 <div className="text-gray-400">Products</div>
               </div>
               <div className="text-center p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
-                <div className="text-4xl font-bold text-gradient mb-2">50+</div>
+                <div className="text-4xl font-bold text-gradient mb-2">10+</div>
                 <div className="text-gray-400">Brands</div>
               </div>
               <div className="text-center p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
-                <div className="text-4xl font-bold text-gradient mb-2">1000+</div>
+                <div className="text-4xl font-bold text-gradient mb-2">100+</div>
                 <div className="text-gray-400">Customers</div>
               </div>
               <div className="text-center p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10">
@@ -54,23 +54,48 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Trusted Brands */}
+      {/* Trusted Partners */}
       <section className="py-16 px-4 animate-fade-in">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-3xl font-semibold text-center text-gradient mb-8">
-            Trusted Brands
+            Trusted Partners
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {['Merck', 'SRL', 'Sigma Aldrich', 'Honeywell', 'Borosil', 'Thermo Fischer'].map((brand) => (
-              <div key={brand} 
-                className="bg-white/5 backdrop-blur-sm p-4 rounded-lg text-center text-gray-300 
-                         hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1">
-                {brand}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+            {[
+              { name: 'Merck', description: 'Leading provider of scientific products' },
+              { name: 'SRL', description: 'Quality laboratory chemicals' },
+              { name: 'Sigma Aldrich', description: 'Research chemicals and materials' },
+              { name: 'Honeywell', description: 'Industrial chemicals and solutions' },
+              { name: 'Borosil', description: 'Premium laboratory glassware' },
+              { name: 'Thermo Fischer', description: 'Scientific instruments and supplies' }
+            ].map((partner, index) => (
+              <div
+                key={partner.name}
+                className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 p-6 
+                         hover:from-blue-500/20 hover:to-purple-500/20 transition-all duration-300
+                         border border-white/10 backdrop-blur-sm flex flex-col items-center justify-center text-center"
+                style={{
+                  animationDelay: `${index * 0.1}s`
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 
+                              group-hover:opacity-100 transition-opacity duration-300" />
+                <h4 className="text-xl font-semibold text-white mb-2 relative z-10 
+                             group-hover:text-gradient transition-colors duration-300">
+                  {partner.name}
+                </h4>
+                <p className="text-gray-400 text-sm relative z-10 group-hover:text-gray-300 
+                             transition-colors duration-300 max-w-[200px] mx-auto">
+                  {partner.description}
+                </p>
+                <div className="absolute -bottom-1 -right-1 w-20 h-20 bg-gradient-to-br 
+                              from-blue-500/20 to-purple-500/20 blur-2xl rounded-full
+                              opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
             ))}
           </div>
-          <p className="text-center text-gray-400 mt-4">
-            We partner with leading brands to provide you with the highest quality products
+          <p className="text-center text-gray-400 mt-8">
+            Partnering with industry leaders to deliver excellence in scientific solutions
           </p>
         </div>
       </section>
@@ -188,23 +213,12 @@ export default function Home() {
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">Connect With Us</h4>
-              <div className="flex gap-4">
-                {['linkedin', 'twitter', 'instagram'].map((social) => (
-                  <Link 
-                    key={social}
-                    href="#" 
-                    className="bg-white/5 p-2 rounded-full hover:bg-white/10 transition-colors"
-                  >
-                    <Image 
-                      src={`/icons/${social}.svg`} 
-                      alt={social} 
-                      width={20} 
-                      height={20}
-                    />
-                  </Link>
-                ))}
-              </div>
+              <h4 className="text-white font-semibold mb-4">Contact Info</h4>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Email: contact.chembio@gmail.com<br />
+                Phone: +91 120 1234567<br />
+                Hours: Mon-Sat, 9:00 AM - 6:00 PM IST
+              </p>
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-white/10">

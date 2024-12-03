@@ -1,126 +1,208 @@
 'use client';
 
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { PageHeader } from '@/components/ui/page-header';
 import { InteractiveMolecule } from '@/components/ui/interactive-molecule';
+import { ValueCard } from '@/components/ui/value-card';
+import { Timeline } from '@/components/ui/timeline';
+import { BeakerIcon, FlaskConicalIcon, LightbulbIcon, ShieldCheckIcon, UsersIcon, ZapIcon } from 'lucide-react';
+import Link from 'next/link';
+
+const values = [
+  {
+    title: 'Quality Excellence',
+    description: 'We maintain rigorous standards in our products and services, ensuring consistent quality that exceeds industry benchmarks.',
+    icon: <BeakerIcon className="text-blue-400" />
+  },
+  {
+    title: 'Innovation Focus',
+    description: 'Continuously exploring and implementing cutting-edge technologies and methodologies to advance scientific research.',
+    icon: <LightbulbIcon className="text-purple-400" />
+  },
+  {
+    title: 'Customer Success',
+    description: 'Dedicated to understanding and fulfilling our customers\' needs, providing comprehensive support at every step.',
+    icon: <UsersIcon className="text-blue-400" />
+  },
+  {
+    title: 'Research Integrity',
+    description: 'Upholding the highest ethical standards in research and business practices, ensuring transparency and trust.',
+    icon: <ShieldCheckIcon className="text-purple-400" />
+  },
+  {
+    title: 'Scientific Expertise',
+    description: 'Our team comprises industry experts and scientists committed to advancing chemical and biological research.',
+    icon: <FlaskConicalIcon className="text-blue-400" />
+  },
+  {
+    title: 'Rapid Innovation',
+    description: 'Quick adaptation to emerging technologies and market needs while maintaining our commitment to quality.',
+    icon: <ZapIcon className="text-purple-400" />
+  }
+];
+
+const milestones = [
+  {
+    year: '2016',
+    title: 'Foundation',
+    description: 'ChemBio Lifesciences was established with a vision to provide high-quality research chemicals and equipment.'
+  },
+  {
+    year: '2018',
+    title: 'Market Growth',
+    description: 'Expanded our product portfolio and established partnerships with leading manufacturers.'
+  },
+  {
+    year: '2020',
+    title: 'Digital Innovation',
+    description: 'Launched our e-commerce platform and implemented digital inventory management systems.'
+  },
+  {
+    year: '2021',
+    title: 'Quality Certification',
+    description: 'Achieved ISO 9001:2015 certification for our quality management systems.'
+  },
+  {
+    year: '2022',
+    title: 'Research Excellence',
+    description: 'Established our R&D center and formed partnerships with premier research institutions.'
+  },
+  {
+    year: '2024',
+    title: 'Global Expansion',
+    description: 'Expanded operations internationally with a focus on sustainable and innovative solutions.'
+  }
+];
 
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-gradient-custom">
       <PageHeader 
         title="About Us" 
-        subtitle="Leading the way in chemical and biological solutions since 2010" 
+        subtitle="Advancing scientific research through quality and innovation since 2010" 
       />
 
       {/* Mission & Vision */}
-      <section className="py-16 px-4">
+      <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="animate-fade-in">
-              <h2 className="text-3xl font-semibold text-gradient mb-6">Our Mission</h2>
-              <p className="text-gray-300 leading-relaxed mb-6">
-                At Chembio Lifesciences, we are dedicated to advancing scientific research by providing 
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                Our Mission
+              </h2>
+              <p className="text-gray-300 text-lg leading-relaxed">
+                At ChemBio Lifesciences, we are dedicated to advancing scientific research by providing 
                 high-quality chemicals, equipment, and solutions to research institutions worldwide.
               </p>
-              <p className="text-gray-300 leading-relaxed mb-8">
+              <p className="text-gray-300 leading-relaxed">
                 Our commitment to quality, innovation, and customer service has made us a trusted partner 
-                in the scientific community.
+                in the scientific community. We strive to enable groundbreaking research and discoveries 
+                through our comprehensive range of products and expert support.
               </p>
-              <div className="flex gap-4">
-                <button className="btn-primary">Learn More</button>
-                <button className="btn-secondary">Our Products</button>
+              <div className="flex flex-wrap gap-4 pt-4">
+                <Link href="/products" className="btn-primary">
+                  Explore Products
+                </Link>
+                <Link href="/contact" className="btn-secondary">
+                  Get in Touch
+                </Link>
               </div>
-            </div>
-            <div className="h-[500px]">
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="h-[500px] relative"
+            >
               <InteractiveMolecule />
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Core Values */}
-      <section className="py-16 px-4 bg-white/5">
+      <section className="py-20 px-4 bg-white/5 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-semibold text-center text-gradient mb-12">Our Core Values</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                title: 'Quality',
-                description: 'We maintain the highest standards in our products and services.',
-                icon: '🎯'
-              },
-              {
-                title: 'Innovation',
-                description: 'Continuously improving and adapting to new technologies.',
-                icon: '💡'
-              },
-              {
-                title: 'Integrity',
-                description: 'Operating with transparency and ethical business practices.',
-                icon: '🤝'
-              }
-            ].map((value) => (
-              <div key={value.title} className="service-card animate-fade-in">
-                <div className="text-4xl mb-4">{value.icon}</div>
-                <h3 className="text-xl font-semibold text-white mb-2">{value.title}</h3>
-                <p className="text-gray-400">{value.description}</p>
-              </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent mb-4">
+              Our Core Values
+            </h2>
+            <p className="text-gray-300 max-w-2xl mx-auto">
+              These principles guide our operations and reflect our commitment to excellence in scientific research.
+            </p>
+          </motion.div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {values.map((value, index) => (
+              <ValueCard
+                key={value.title}
+                title={value.title}
+                description={value.description}
+                icon={value.icon}
+                index={index}
+              />
             ))}
           </div>
         </div>
       </section>
 
       {/* History Timeline */}
-      <section className="py-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-semibold text-center text-gradient mb-12">Our Journey</h2>
-          <div className="space-y-12">
-            {[
-              {
-                year: '2010',
-                title: 'Foundation',
-                description: 'Chembio Lifesciences was established with a vision to serve the scientific community.'
-              },
-              {
-                year: '2015',
-                title: 'Expansion',
-                description: 'Expanded our product line and reached 500+ research institutions.'
-              },
-              {
-                year: '2020',
-                title: 'Innovation',
-                description: 'Launched digital platform and modernized operations.'
-              },
-              {
-                year: '2024',
-                title: 'Global Reach',
-                description: 'Serving customers worldwide with a comprehensive product portfolio.'
-              }
-            ].map((milestone) => (
-              <div key={milestone.year} className="flex gap-8 items-start animate-fade-in">
-                <div className="text-2xl font-bold text-gradient w-24 flex-shrink-0">
-                  {milestone.year}
-                </div>
-                <div className="service-card flex-grow">
-                  <h3 className="text-xl font-semibold text-white mb-2">{milestone.title}</h3>
-                  <p className="text-gray-400">{milestone.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+      <section className="py-20 px-4">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent mb-4">
+              Our Journey
+            </h2>
+            <p className="text-gray-300 max-w-2xl mx-auto">
+              From our humble beginnings to becoming a trusted name in the industry, 
+              explore the key milestones that have shaped our growth.
+            </p>
+          </motion.div>
+
+          <Timeline milestones={milestones} />
         </div>
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 px-4 bg-white/5">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-semibold text-gradient mb-6">Ready to Work Together?</h2>
-          <p className="text-gray-300 mb-8">
-            Join the thousands of research institutions that trust Chembio Lifesciences 
+      <section className="py-20 px-4 bg-white/5 backdrop-blur-sm">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="max-w-3xl mx-auto text-center"
+        >
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent mb-6">
+            Ready to Work Together?
+          </h2>
+          <p className="text-gray-300 text-lg mb-8">
+            Join the thousands of research institutions that trust ChemBio Lifesciences 
             for their chemical and equipment needs.
           </p>
-          <button className="btn-primary">Contact Us Today</button>
-        </div>
+          <Link href="/contact" className="btn-primary">
+            Contact Us Today
+          </Link>
+        </motion.div>
       </section>
     </main>
   );

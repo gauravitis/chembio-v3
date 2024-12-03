@@ -1,8 +1,13 @@
 import { Product } from '@/data/products';
 import Image from 'next/image';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Eye, Send } from 'lucide-react';
+import { QuickView } from './quick-view';
 
 interface ProductCardProps {
   product: Product;
+  view: 'grid' | 'list';
 }
 
 // Function to format price in Indian Rupees
@@ -18,67 +23,143 @@ function formatIndianPrice(price: number) {
 
 // Function to clean image URL
 function getCleanImageUrl(url: string) {
-  // Remove leading slash if it's an external URL
   if (url.startsWith('/https:')) {
     return url.substring(1);
   }
   return url;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+// Animation variants
+const cardVariants = {
+  grid: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.3
+    }
+  },
+  list: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.3
+    }
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    transition: {
+      duration: 0.2
+    }
+  }
+};
+
+export function ProductCard({ product, view }: ProductCardProps) {
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
+
   return (
-    <div className="group relative bg-white/5 border border-white/10 rounded-lg overflow-hidden transition-all hover:border-accent-blue/50">
-      <div className="aspect-square relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-accent-blue/20 to-accent-purple/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-        <Image
-          src={getCleanImageUrl(product.image)}
-          alt={product.name}
-          fill
-          className="object-contain p-4"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
-      </div>
-      <div className="p-4 space-y-3">
-        {/* Catalogue ID */}
-        <div className="flex justify-between items-center">
-          <span className="text-xs px-2 py-1 bg-accent-blue/20 rounded-full text-accent-blue">
-            {product.id}
-          </span>
-          <span className="text-accent-blue font-medium">
-            {formatIndianPrice(product.price)}
-          </span>
+    <>
+      <motion.div
+        layout
+        variants={cardVariants}
+        initial="exit"
+        animate={view}
+        exit="exit"
+        whileHover={{ y: -5 }}
+        className={`group relative bg-white/90 backdrop-blur-lg rounded-xl overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl border border-gray-200/30 ${
+          view === 'list' ? 'grid grid-cols-1 md:grid-cols-4 gap-4' : ''
+        }`}
+      >
+        {/* Product Image Container */}
+        <div className={`relative ${view === 'list' ? 'h-48 md:h-full' : 'aspect-square'}`}>
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <Image
+            src={getCleanImageUrl(product.image)}
+            alt={product.name}
+            fill
+            className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+            sizes={view === 'list' ? '(max-width: 768px) 100vw, 25vw' : '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'}
+          />
+          
+          {/* Quick Actions Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <button
+              onClick={() => setIsQuickViewOpen(true)}
+              className="p-3 rounded-full bg-white/90 hover:bg-white shadow-lg transform hover:scale-110 transition-all duration-300"
+              title="Quick View"
+            >
+              <Eye className="w-5 h-5 text-blue-600" />
+            </button>
+            <button
+              onClick={() => {
+                window.location.href = `/contact?product=${product.id}`;
+              }}
+              className="p-3 rounded-full bg-white/90 hover:bg-white shadow-lg transform hover:scale-110 transition-all duration-300"
+              title="Request Quote"
+            >
+              <Send className="w-5 h-5 text-purple-600" />
+            </button>
+          </div>
         </div>
 
-        {/* Product Name */}
-        <h3 className="text-lg font-semibold text-white">{product.name.replace('\r', '')}</h3>
-
-        {/* Description */}
-        <p className="text-sm text-gray-400">{product.description}</p>
-
-        {/* CAS Number and Pack Size */}
-        <div className="flex flex-wrap justify-between pt-2 border-t border-white/10">
-          {(product.casNumber || product.packSize) && (
-            <div className="flex flex-col w-full md:w-1/2 xl:w-1/3 mb-4 md:mb-0">
-              {product.casNumber && (
-                <div className="flex flex-col">
-                  <span className="text-xs text-gray-500">CAS Number</span>
-                  <span className="text-sm text-gray-300">{product.casNumber}</span>
-                </div>
-              )}
-            </div>
-          )}
-          {(product.casNumber || product.packSize) && (
-            <div className="flex flex-col w-full md:w-1/2 xl:w-1/3 mb-4 md:mb-0">
+        {/* Product Info */}
+        <div className={`p-4 space-y-3 ${view === 'list' ? 'md:col-span-3' : ''}`}>
+          {/* Catalogue ID and Price */}
+          <div className="flex justify-between items-start">
+            <div className="space-y-1">
+              <span className="text-xs px-2 py-1 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full text-blue-700 font-medium">
+                {product.id}
+              </span>
               {product.packSize && (
-                <div className="flex flex-col">
-                  <span className="text-xs text-gray-500">Pack Size</span>
-                  <span className="text-sm text-gray-300">{product.packSize}</span>
+                <div className="text-xs text-gray-600">
+                  Pack Size: {product.packSize}
                 </div>
               )}
             </div>
-          )}
+            <span className="text-purple-600 font-semibold">
+              {formatIndianPrice(product.price)}
+            </span>
+          </div>
+
+          {/* Product Name */}
+          <h3 className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors duration-300 line-clamp-2">
+            {product.name}
+          </h3>
+
+          {/* CAS Number and Description */}
+          <div className={view === 'list' ? 'grid grid-cols-1 md:grid-cols-2 gap-4' : ''}>
+            {product.casNumber && (
+              <p className="text-sm text-gray-500">
+                CAS: {product.casNumber}
+              </p>
+            )}
+            {view === 'list' && (
+              <p className="text-sm text-gray-600 line-clamp-2">
+                {product.description}
+              </p>
+            )}
+          </div>
+
+          {/* Request Quote Button */}
+          <button
+            onClick={() => {
+              window.location.href = `/contact?product=${product.id}`;
+            }}
+            className={`w-full py-2 px-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-300 ${
+              view === 'grid' ? 'opacity-0 group-hover:opacity-100' : ''
+            }`}
+          >
+            Request Quote
+          </button>
         </div>
-      </div>
-    </div>
+      </motion.div>
+
+      {/* Quick View Modal */}
+      <QuickView
+        product={product}
+        isOpen={isQuickViewOpen}
+        onClose={() => setIsQuickViewOpen(false)}
+      />
+    </>
   );
 }
