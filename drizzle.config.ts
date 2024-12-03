@@ -9,7 +9,7 @@ if (!process.env.DATABASE_URL) {
 export default {
   schema: './src/db/schema/*',
   out: './drizzle',
-  driver: 'neon',
+  driver: 'postgres',
   dbCredentials: {
     connectionString: process.env.DATABASE_URL,
   },
