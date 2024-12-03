@@ -1,5 +1,5 @@
 import { drizzle } from 'drizzle-orm/neon-http';
-import { neon } from '@neondatabase/serverless';
+import { neon, neonConfig } from '@neondatabase/serverless';
 import { migrate } from 'drizzle-orm/neon-http/migrator';
 import * as dotenv from 'dotenv';
 
@@ -10,6 +10,7 @@ const runMigration = async () => {
     throw new Error('DATABASE_URL is not defined');
   }
 
+  neonConfig.fetchConnectionCache = true;
   const sql = neon(process.env.DATABASE_URL);
   const db = drizzle(sql);
 
