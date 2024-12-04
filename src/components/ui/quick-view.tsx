@@ -59,7 +59,7 @@ export function QuickView({ product, isOpen, onClose }: QuickViewProps) {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
-                        {product.catalogueId}
+                        {product.id}
                       </span>
                       {product.casNumber && (
                         <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">
@@ -94,7 +94,7 @@ export function QuickView({ product, isOpen, onClose }: QuickViewProps) {
                   <div className="pt-4">
                     <button
                       onClick={() => {
-                        window.location.href = `/contact?product=${product.catalogueId}`;
+                        window.location.href = `/contact?product=${product.id}`;
                       }}
                       className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-300"
                     >
