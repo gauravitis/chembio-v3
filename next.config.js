@@ -9,6 +9,12 @@ const nextConfig = {
       },
     ],
   },
+  // Improve build performance
+  swcMinify: true,
+  poweredByHeader: false,
+  reactStrictMode: true,
+  // Optimize output
+  output: 'standalone',
 }
 
 module.exports = nextConfig

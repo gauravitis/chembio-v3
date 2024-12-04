@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { AdminLoginButton } from './admin-login-button';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -57,7 +56,6 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <AdminLoginButton />
           </div>
 
           {/* Mobile Menu Button */}
