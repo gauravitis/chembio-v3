@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { PageHeader } from '@/components/ui/page-header';
-import { useAuth } from '@clerk/nextjs';
 
 interface ProductFormData {
   name: string;
@@ -35,22 +34,17 @@ const categories = [
 ];
 
 export default function AdminProductsPage() {
-  const [formData, setFormData] = useState<ProductFormData>(initialFormData);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const { isSignedIn } = useAuth();
-
-  // Redirect if not authenticated
-  if (!isSignedIn) {
-    router.push('/sign-in');
-    return null;
-  }
+  const [formData, setFormData] = useState<ProductFormData>(initialFormData);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setIsLoading(true);
     setError(null);
+    setSuccess(null);
 
     try {
       const response = await fetch('/api/products', {
@@ -69,12 +63,13 @@ export default function AdminProductsPage() {
       const data = await response.json();
       console.log('Product created:', data);
       setFormData(initialFormData);
+      setSuccess('Product created successfully!');
       router.refresh();
     } catch (err) {
       console.error('Error creating product:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
-      setIsSubmitting(false);
+      setIsLoading(false);
     }
   };
 
@@ -97,6 +92,11 @@ export default function AdminProductsPage() {
               {error && (
                 <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500">
                   {error}
+                </div>
+              )}
+              {success && (
+                <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-lg text-green-500">
+                  {success}
                 </div>
               )}
 
@@ -247,10 +247,10 @@ export default function AdminProductsPage() {
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isLoading}
                   className="px-6 py-3 bg-accent-blue hover:bg-accent-blue/90 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? 'Adding Product...' : 'Add Product'}
+                  {isLoading ? 'Adding Product...' : 'Add Product'}
                 </button>
               </div>
             </form>
